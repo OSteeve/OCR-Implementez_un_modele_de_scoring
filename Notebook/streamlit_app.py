@@ -13,7 +13,7 @@ data = joblib.load("train_df.joblib")
 
 # sélection du client
 client_id = st.selectbox(
-    "Choisir un client",
+    "Choisir un ID client",
     data["SK_ID_CURR"]
 )
 
