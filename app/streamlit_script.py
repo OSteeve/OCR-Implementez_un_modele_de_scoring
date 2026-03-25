@@ -10,7 +10,7 @@ import os
 # Chargement
 BASE_DIR = os.path.dirname(__file__)
 # écriture des chemins de fichiers en fonction de la base réelle
-model_path = os.path.join(BASE_DIR, "pipeline_lgbm.joblib")
+model_path = os.path.join(BASE_DIR, "pipeline_lgbm2.joblib")
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
 
