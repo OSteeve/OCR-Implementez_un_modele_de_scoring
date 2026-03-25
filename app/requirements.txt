@@ -6,4 +6,3 @@ lightgbm
 joblib
 matplotlib
 plotly
-shap==0.44.1
