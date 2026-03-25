@@ -9,11 +9,11 @@ import matplotlib.pyplot as plt
 # Chargement
 model = joblib.load("pipeline_lgbm.joblib")  # pipeline
 threshold = joblib.load("threshold_lgbm.joblib")
-data = joblib.load("train_df.joblib")
+data = joblib.load("app_data.joblib")
 
 # sélection du client
 client_id = st.selectbox(
-    "Choisir un ID client",
+    "Choisir un client",
     data["SK_ID_CURR"]
 )
 
@@ -58,5 +58,5 @@ explainer = shap.TreeExplainer(model.named_steps["model"])
 shap_values = explainer(X_client)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
-shap.plots.waterfall(shap_values[0], show=False)
+shap.plots.waterfall(shap_values[0], max_display=20, show=True)
 st.pyplot(fig)
