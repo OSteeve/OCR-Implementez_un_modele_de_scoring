@@ -1,9 +1,9 @@
 streamlit
 pandas
 numpy
-scikit-learn==1.7.1
+scikit-learn
 lightgbm
-shap==0.48.0
+shap
 matplotlib
 plotly
 joblib
