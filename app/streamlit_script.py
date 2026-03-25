@@ -29,7 +29,10 @@ client_data = data[data["SK_ID_CURR"] == client_id]
 # Uniquement les variables explicatives(ID et index ne sont pas des valeurs prédictives)
 feats = [f for f in data.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
 X_client = client_data[feats]
-X_transformed = model.named_steps["imputer"].transform(X_client)
+#X_transformed = model.named_steps["imputer"].transform(X_client)
+
+st.write("Colonnes X_client:", list(X_client.columns))
+
 
 # Prédiction en appliquant le seuil score métier
 #proba = model.predict_proba(X_client)[0, 1]
