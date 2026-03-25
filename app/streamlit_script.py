@@ -26,25 +26,30 @@ client_id = st.selectbox(
 
 client_data = data[data["SK_ID_CURR"] == client_id]
 
+
+
 # Uniquement les variables explicatives(ID et index ne sont pas des valeurs prédictives)
 feats = [f for f in data.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
 X_client = client_data[feats]
 #X_transformed = model.named_steps["imputer"].transform(X_client)
 
+# sécurisation données
+X_client = X_client.copy()
+X_client = X_client.astype(float)
+
 st.write("Colonnes X_client:", list(X_client.columns))
 
-
 # Prédiction en appliquant le seuil score métier
-#proba = model.predict_proba(X_client)[0, 1]
-#prediction = int(proba >= threshold)
+proba = model.predict_proba(X_client)[0, 1]
+prediction = int(proba >= threshold)
 
-#if prediction == 1:
-    #decision = "Crédit refusé"
-#else:
-    #decision = "Crédit accordé"
+if prediction == 1:
+    decision = "Crédit refusé"
+else:
+    decision = "Crédit accordé"
 
-#st.metric("Probabilité de défaut", f"{proba:.2f}")
-#st.write("Décision :", decision)
+st.metric("Probabilité de défaut", f"{proba:.2f}")
+st.write("Décision :", decision)
 
 
 # jauge de risque
