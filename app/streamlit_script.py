@@ -10,17 +10,21 @@ import os
 # Chargement
 BASE_DIR = os.path.dirname(__file__)
 # écriture des chemins de fichiers en fonction de la base réelle
-pipeline_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
+#pipeline_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
+model_path = os.path.join(BASE_DIR, "model.joblib")
+imputer_path = os.path.join(BASE_DIR, "imputer.joblib")
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
 
+model = joblib.load(model_path) # pipeline
 pipeline = joblib.load(pipeline_path) # pipeline
+imputer = joblib.load(imputer_path) # imputation 
 threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
 data = joblib.load(data_path) # data
 
 # récupérer les éléments du pipeline
-imputer = pipeline.named_steps["imputer"]
-model = pipeline.named_steps["model"]
+#imputer = pipeline.named_steps["imputer"]
+#model = pipeline.named_steps["model"]
 
 # sélection du client
 client_id = st.selectbox(
