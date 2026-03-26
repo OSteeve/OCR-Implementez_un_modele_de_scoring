@@ -17,7 +17,7 @@ threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
 
 model = joblib.load(model_path) # pipeline
-pipeline = joblib.load(pipeline_path) # pipeline
+#pipeline = joblib.load(pipeline_path) # pipeline
 imputer = joblib.load(imputer_path) # imputation 
 threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
 data = joblib.load(data_path) # data
