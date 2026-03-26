@@ -10,15 +10,15 @@ import os
 # Chargement
 BASE_DIR = os.path.dirname(__file__)
 # écriture des chemins de fichiers en fonction de la base réelle
-#pipeline_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
-model_path = os.path.join(BASE_DIR, "model.joblib")
-imputer_path = os.path.join(BASE_DIR, "imputer.joblib")
+pipe_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
+#model_path = os.path.join(BASE_DIR, "model.joblib")
+#imputer_path = os.path.join(BASE_DIR, "imputer.joblib")
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
 
-model = joblib.load(model_path) # pipeline
-#pipeline = joblib.load(pipeline_path) # pipeline
-imputer = joblib.load(imputer_path) # imputation 
+pipe = joblib.load(pipe_path) # pipeline
+#model = joblib.load(model_path) # model
+#imputer = joblib.load(imputer_path) # imputation 
 threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
 data = joblib.load(data_path) # data
 
@@ -44,9 +44,9 @@ feats = [f for f in data.columns if f not in ['TARGET',
 X_client = client_data[feats]
 
 # Prédiction en appliquant le seuil score métier
-X_transformed = imputer.transform(X_client)
-X_transformed = pd.DataFrame(X_transformed, columns=X_client.columns)
-proba = model.predict_proba(X_transformed)[0, 1]
+#X_transformed = imputer.transform(X_client)
+#X_transformed = pd.DataFrame(X_transformed, columns=X_client.columns)
+proba = pipe.predict_proba(X_client)[0, 1]
 prediction = int(proba >= threshold)
 
 st.metric("Probabilité de défaut", f"{proba:.2f}")
@@ -74,8 +74,8 @@ st.plotly_chart(fig)
 
 # SHAP feature important
 #explainer = shap.TreeExplainer(model.named_steps["model"])
-explainer = shap.TreeExplainer(model)
-shap_values = explainer(X_transformed)
+explainer = shap.TreeExplainer(pipe)
+shap_values = explainer(X_client)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
 shap.plots.waterfall(shap_values[0], max_display=20, show=False)
