@@ -39,7 +39,7 @@ st.metric("Probabilité de défaut", f"{proba:.2f}")
 if prediction == 1:
     st.error("Décision :REFUSE")
 else:
-    st.success("Décision :", decision)
+    st.success("Décision :ACCORDE")
 
 # jauge de risque
 fig = go.Figure(go.Indicator(
