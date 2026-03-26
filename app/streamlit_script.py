@@ -10,13 +10,17 @@ import os
 # Chargement
 BASE_DIR = os.path.dirname(__file__)
 # écriture des chemins de fichiers en fonction de la base réelle
-model_path = os.path.join(BASE_DIR, "model_lgbm.joblib")
+pipeline_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
 
-model = joblib.load(model_path) # pipeline
+pipeline = joblib.load(model_path) # pipeline
 threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
 data = joblib.load(data_path) # data
+
+# récupérer les éléments du pipeline
+imputer = pipeline.named_steps["imputer"]
+model = pipeline.named_steps["model"]
 
 # sélection du client
 client_id = st.selectbox(
@@ -24,22 +28,28 @@ client_id = st.selectbox(
     data["SK_ID_CURR"]
 )
 
-client_data = data[data["SK_ID_CURR"] == client_id]
 
 # Uniquement les variables explicatives(ID et index ne sont pas des valeurs prédictives)
-feats = [f for f in data.columns if f not in ['TARGET','SK_ID_CURR','SK_ID_BUREAU','SK_ID_PREV','index']]
+client_data = data[data["SK_ID_CURR"] == client_id]
+feats = [f for f in data.columns if f not in ['TARGET',
+                                              'SK_ID_CURR',
+                                              'SK_ID_BUREAU',
+                                              'SK_ID_PREV',
+                                              'index'
+                                              ]]
 X_client = client_data[feats]
-#X_transformed = model.named_steps["imputer"].transform(X_client)
 
 # Prédiction en appliquant le seuil score métier
-proba = model.predict_proba(X_client)[0, 1]
+X_transformed = pd.DataFrame(imputer.transform(X_client), columns=X_client.columns)
+proba = model.predict_proba(X_transformed)[0, 1]
 prediction = int(proba >= threshold)
 
 st.metric("Probabilité de défaut", f"{proba:.2f}")
+st.write("## Decision :")
 if prediction == 1:
-    st.error("Décision :REFUSE")
+    st.error("## REFUS")
 else:
-    st.success("Décision :ACCORDE")
+    st.success("## ACCORD")
 
 # jauge de risque
 fig = go.Figure(go.Indicator(
@@ -60,7 +70,7 @@ st.plotly_chart(fig)
 # SHAP feature important
 #explainer = shap.TreeExplainer(model.named_steps["model"])
 explainer = shap.TreeExplainer(model)
-shap_values = explainer(X_client)
+shap_values = explainer(X_transformed)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
 shap.plots.waterfall(shap_values[0], max_display=20, show=False)
