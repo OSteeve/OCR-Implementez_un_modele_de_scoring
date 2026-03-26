@@ -11,16 +11,16 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 # écriture des chemins de fichiers en fonction de la base réelle
 pipe_path = os.path.join(BASE_DIR, "pipe_lgbm.joblib")
-#model_path = os.path.join(BASE_DIR, "model.joblib")
-#imputer_path = os.path.join(BASE_DIR, "imputer.joblib")
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 data_path = os.path.join(BASE_DIR, "app_data.joblib")
+#model_path = os.path.join(BASE_DIR, "model.joblib")
+#imputer_path = os.path.join(BASE_DIR, "imputer.joblib")
 
-pipe = joblib.load(pipe_path) # pipeline
-#model = joblib.load(model_path) # model
-#imputer = joblib.load(imputer_path) # imputation 
+pipe = joblib.load(pipe_path) # pipeline 
 threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
 data = joblib.load(data_path) # data
+#model = joblib.load(model_path) # model
+#imputer = joblib.load(imputer_path) # imputation
 
 # récupérer les éléments du pipeline
 #imputer = pipeline.named_steps["imputer"]
@@ -52,9 +52,9 @@ prediction = int(proba >= threshold)
 st.metric("Probabilité de défaut", f"{proba:.2f}")
 st.write("## Decision :")
 if prediction == 1:
-    st.error("## REFUS")
+    st.error("# REFUS")
 else:
-    st.success("## ACCORD")
+    st.success("# ACCORD")
 
 # jauge de risque
 fig = go.Figure(go.Indicator(
@@ -73,9 +73,13 @@ fig = go.Figure(go.Indicator(
 st.plotly_chart(fig)
 
 # SHAP feature important
-#explainer = shap.TreeExplainer(model.named_steps["model"])
-explainer = shap.TreeExplainer(pipe)
-shap_values = explainer(X_client)
+explainer = shap.TreeExplainer(pipe.named_steps["model"])
+
+# preprocessing des données
+X_imputed = pipe.named_steps["imputer"].transform(X_client)
+X_imputed_df = pd.DataFrame(X_imputed,columns=X_client.columns)
+
+shap_values = explainer(X_imputed_df)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
 shap.plots.waterfall(shap_values[0], max_display=20, show=False)
