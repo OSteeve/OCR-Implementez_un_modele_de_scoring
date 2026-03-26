@@ -35,14 +35,11 @@ X_client = client_data[feats]
 proba = model.predict_proba(X_client)[0, 1]
 prediction = int(proba >= threshold)
 
-if prediction == 1:
-    decision = "Crédit refusé"
-else:
-   decision = "Crédit accordé"
-
 st.metric("Probabilité de défaut", f"{proba:.2f}")
-st.write("Décision :", decision)
-
+if prediction == 1:
+    st.error("Décision :REFUSE")
+else:
+    st.success("Décision :", decision)
 
 # jauge de risque
 fig = go.Figure(go.Indicator(
