@@ -45,23 +45,24 @@ st.write("Décision :", decision)
 
 
 # jauge de risque
-#fig = go.Figure(go.Indicator(
- #   mode="gauge+number",
-  #  value=proba,
-   # title={'text': "Risque de défaut"},
-    #gauge={
-     #   'axis': {'range': [0, 1]},
-      #  'threshold': {
-       #     'line': {'color': "red", 'width': 4},
-        #    'value': threshold
-        #}
-   # }
-#))
+fig = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=proba,
+    title={'text': "Risque de défaut"},
+    gauge={
+        'axis': {'range': [0, 1]},
+        'threshold': {
+            'line': {'color': "red", 'width': 4},
+            'value': threshold
+        }
+    }
+))
 
-#st.plotly_chart(fig)
+st.plotly_chart(fig)
 
 # SHAP feature important
-explainer = shap.TreeExplainer(model.named_steps["model"])
+#explainer = shap.TreeExplainer(model.named_steps["model"])
+explainer = shap.TreeExplainer(model)
 shap_values = explainer(X_client)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
