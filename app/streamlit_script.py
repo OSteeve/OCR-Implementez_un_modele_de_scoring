@@ -40,7 +40,8 @@ feats = [f for f in data.columns if f not in ['TARGET',
 X_client = client_data[feats]
 
 # Prédiction en appliquant le seuil score métier
-X_transformed = pd.DataFrame(imputer.transform(X_client), columns=X_client.columns)
+X_transformed = imputer.transform(X_client)
+X_transformed = pd.DataFrame(X_transformed, columns=X_client.columns)
 proba = model.predict_proba(X_transformed)[0, 1]
 prediction = int(proba >= threshold)
 
