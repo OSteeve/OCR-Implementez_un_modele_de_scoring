@@ -4,8 +4,10 @@ import plotly.graph_objects as go
 import shap
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-API_URL = "http://localhost:8000"
+# API_URL = "http://localhost:8000"
+API_URL = os.getenv("API_URL", "http://localhost:8000")
 
 st.title("Scoring risque client")
 
