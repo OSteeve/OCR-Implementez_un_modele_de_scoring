@@ -1,0 +1,38 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy on EC2 via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            set -e
+
+            cd ~/OCR-Implementez_un_modele_de_scoring/app
+
+            git pull origin main
+
+            docker stop scoring-container || true
+            docker rm scoring-container || true
+
+            docker build -t scoring-app .
+
+            docker run -d \
+              --name scoring-container \
+              -p 8501:8501 \
+              -p 8000:8000 \
+              scoring-app
