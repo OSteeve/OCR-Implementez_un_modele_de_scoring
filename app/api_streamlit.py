@@ -9,7 +9,7 @@ import os
 # API_URL = "http://localhost:8000"
 API_URL = os.getenv("API_URL", "http://localhost:8000")
 
-st.title("Scoring des risques par client")
+st.title("Scoring client")
 
 # Charger les clients via API
 clients = requests.get(f"{API_URL}/clients").json()
