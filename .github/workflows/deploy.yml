@@ -7,33 +7,24 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v5
+      - name: Deploy locally on EC2
+        run: |
+          cd ~/OCR-Implementez_un_modele_de_scoring/app
 
-      - name: Deploy on EC2 via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            set -e
+          git fetch origin
+          git reset --hard origin/main
 
-            cd ~/OCR-Implementez_un_modele_de_scoring/app
+          docker stop scoring-container || true
+          docker rm scoring-container || true
 
-            git pull origin main
+          docker build -t scoring-app .
 
-            docker stop scoring-container || true
-            docker rm scoring-container || true
-
-            docker build -t scoring-app .
-
-            docker run -d \
-              --name scoring-container \
-              --restart always \
-              -p 8501:8501 \
-              -p 8000:8000 \
-              scoring-app
+          docker run -d \
+            --name scoring-container \
+            --restart always \
+            -p 8501:8501 \
+            -p 8000:8000 \
+            scoring-app
