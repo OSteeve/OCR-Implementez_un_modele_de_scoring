@@ -17,3 +17,4 @@ shap==0.48.0
 numba==0.61.2
 
 matplotlib==3.10.8
+pytest==9.0.3
