@@ -35,7 +35,7 @@ if st.button("Score"):
     threshold = result["threshold"]
 
     st.metric("Probabilité de défaut", f"{proba:.3f}")
-    st.metric("Seuil", f"{threshold:.3f}")
+    st.metric("Seuil à ne pas dépasser", f"{threshold:.3f}")
 
     st.subheader("Décision")
     if result["prediction"] == 1:
