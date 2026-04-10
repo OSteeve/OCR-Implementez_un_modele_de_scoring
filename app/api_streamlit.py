@@ -21,7 +21,7 @@ client_id = st.selectbox(
 
 
 # Prédiction
-if st.button("Prédire"):
+if st.button("Score"):
 
     # appel API predict
     response = requests.post(
