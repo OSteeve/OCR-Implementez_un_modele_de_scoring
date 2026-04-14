@@ -19,6 +19,8 @@ jobs:
 
           docker stop scoring-container || true
           docker rm scoring-container || true
+      - name: Run tests
+        run: pytest -v
 
           docker build -t scoring-app .
 
