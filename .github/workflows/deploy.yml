@@ -13,14 +13,19 @@ jobs:
       - name: Deploy locally on EC2
         run: |
           cd ~/OCR-Implementez_un_modele_de_scoring/app
-
           git fetch origin
           git reset --hard origin/main
 
+      - name: Run tests
+        run: |
+          cd ~/OCR-Implementez_un_modele_de_scoring
+          pytest -v
+
+      - name: Rebuild and restart container
+        run: |
+          cd ~/OCR-Implementez_un_modele_de_scoring/app
           docker stop scoring-container || true
           docker rm scoring-container || true
-      - name: Run tests
-        run: pytest -v
 
           docker build -t scoring-app .
 

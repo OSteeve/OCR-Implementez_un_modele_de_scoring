@@ -5,11 +5,18 @@ import shap
 import numpy as np
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+import os
 
 # Chargement
-model = joblib.load("pipeline_lgbm.joblib")  # pipeline
-threshold = joblib.load("threshold_lgbm.joblib")
-data = joblib.load("app_data.joblib")
+BASE_DIR = os.path.dirname(__file__)
+# écriture des chemins de fichiers en fonction de la base réelle
+model_path = os.path.join(BASE_DIR, "pipeline_lgbm.joblib")
+threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
+data_path = os.path.join(BASE_DIR, "app_data.joblib")
+
+model = joblib.load(model_path) # pipeline
+threshold = joblib.load(threshold_path) # seuil optimimum def par le modèle
+data = joblib.load(data_path) # data
 
 # sélection du client
 client_id = st.selectbox(
@@ -58,5 +65,5 @@ explainer = shap.TreeExplainer(model.named_steps["model"])
 shap_values = explainer(X_client)
 expected_value = explainer.expected_value
 fig, ax = plt.subplots()
-shap.plots.waterfall(shap_values[0], max_display=20, show=True)
+shap.plots.waterfall(shap_values[0], max_display=20, show=False)
 st.pyplot(fig)
