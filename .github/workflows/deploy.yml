@@ -25,7 +25,7 @@ jobs:
       - name: Run tests
         run: |
           cd ~/OCR-Implementez_un_modele_de_scoring
-          pytest -v
+          python3.11 -m pytest -v pytests
 
       - name: Rebuild and restart container
         run: |
