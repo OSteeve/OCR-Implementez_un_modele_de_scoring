@@ -23,6 +23,8 @@ client_id = st.selectbox(
 # Prédiction
 if st.button("Score"):
 
+
+
     # appel API predict
     response = requests.post(
         f"{API_URL}/predict",
@@ -34,18 +36,17 @@ if st.button("Score"):
     proba = result["proba"]
     threshold = result["threshold"]
 
-    st.metric("Probabilité de défaut", f"{proba:.3f}")
-    st.metric("Seuil à ne pas dépasser", f"{threshold:.3f}")
-
+    # Décision
     st.subheader("Décision")
     if result["prediction"] == 1:
         st.error("## REFUS")
     else:
         st.success("## ACCORD")
 
-    # ------------------------------
+    st.metric("Probabilité de défaut", f"{proba:.3f}")
+    st.metric("Seuil à ne pas dépasser", f"{threshold:.3f}")
+
     # Jauge
-    # ------------------------------
     fig = go.Figure(
         go.Indicator(
             mode="gauge+number",
@@ -61,7 +62,6 @@ if st.button("Score"):
             }
         )
     )
-
     st.plotly_chart(fig)
 
 
