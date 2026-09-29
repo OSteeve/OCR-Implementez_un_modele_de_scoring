@@ -16,7 +16,7 @@ pipe = joblib.load(pipe_path)
 threshold_path = os.path.join(BASE_DIR, "threshold_lgbm.joblib")
 threshold = joblib.load(threshold_path)
 
-data_path = os.path.join(BASE_DIR, "app_data.joblib")
+data_path = os.path.join(BASE_DIR, "app_data_less_ID.joblib")
 data = joblib.load(data_path)
 
 # Extraction du modèle et imputer du pipeline
