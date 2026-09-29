@@ -72,8 +72,6 @@ if st.button("Score"):
         json={"SK_ID_CURR": int(client_id)}
     )
 
-    #st.write("Status SHAP :", response_shap.status_code)
-    #st.write("Réponse SHAP :", response_shap.text)
 
     # Récupération du dictionnaire en reponse
     shap_result = response_shap.json()
