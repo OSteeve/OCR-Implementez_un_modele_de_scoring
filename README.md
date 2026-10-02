@@ -1,4 +1,5 @@
 # Projet OCR — Implémentez un modèle de scoring
+https://github.com/OSteeve/OCR-Implementez_un_modele_de_scoring
 
 ## Présentation du projet
 
@@ -160,9 +161,7 @@ OCR-Implementez_un_modele_de_scoring/
 ## Interprétation avec SHAP
 
 Afin de rendre les prédictions du modèle plus compréhensibles, l'application utilise **SHAP (SHapley Additive exPlanations)**.
-
 Les valeurs SHAP permettent d'identifier les variables qui contribuent à augmenter ou diminuer le risque d'un client.
-
 L'utilisateur peut ainsi consulter non seulement le score obtenu, mais également les principaux facteurs ayant influencé la prédiction.
 
 ---
@@ -181,7 +180,7 @@ Elle permet notamment :
 FastAPI fournit également une documentation interactive de l'API avec **Swagger**  
 - En local avec : http://127.0.0.1:8000/docs#/
 - Dans le cloud avec l'instance AWS EC2 Exemple http://13.60.210.92:8000/docs#/
-  où 13.60.210.92 correspond à l'adresse IPv4 publique de l'instance
+  avec 13.60.210.92 correspond à l'adresse IPv4 publique de l'instance (variable si arrêtée de l’instance EC2)
     
 ---
 
