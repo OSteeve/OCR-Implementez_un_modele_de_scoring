@@ -1,7 +1,6 @@
 
 import pandas as pd
 import pytest
-
 from app.api_fastapi import get_client_features, data
 
 
