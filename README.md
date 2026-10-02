@@ -5,7 +5,7 @@
 Ce projet a pour objectif de développer un **modèle de scoring de crédit** permettant d'estimer la probabilité qu'un client rencontre des difficultés de remboursement.
 
 Il s'appuie sur les données du challenge **Home Credit Default Risk**.
-  
+
 ---
 
 ## Objectifs
@@ -28,6 +28,40 @@ Les principales étapes du projet sont :
 
 ---
 
+Organisation du dépôt
+
+``` text
+OCR-Implementez_un_modele_de_scoring/
+│
+├── .devcontainer/
+│   └── devcontainer.json       # Configuration d'un conteneur
+│       └── ...
+│
+├── .github/workflows
+│   └── deploy.yml
+│       └── ...                 # Pipeline CI/CD GitHub Actions
+│
+├── app/
+│   ├── api_fastapi.py          # API de scoring FastAPI
+│   ├── api_streamlit.py        # Interface utilisateur Streamlit
+│   ├── Dockerfile              # Construction de l'image Docker
+│   ├── pipe_lgbm.joblib        # Pipeline du modèle entraîné
+│   ├── threshold_lgbm.joblib   # Seuil de décision métier
+│   └── ...                     # Ressources nécessaires à l'application
+│
+├── Notebook/
+│   ├── Otto_Steeve_2_notebook.. # Exploration, préparation et modélisation
+│   ├── streamlit_script.py     # script de test de streamlit et du conteneur
+    └── ...                     
+│
+├── pytests/
+│   └── ...                     # Tests automatisés de l'API
+│
+├── requirements.txt            # Dépendances Python
+│
+└── README.md                   # Présentation du projet
+
+````
 ## Modèle de scoring
 
 Le modèle estime pour chaque client une **probabilité de défaut de paiement**.
@@ -178,7 +212,7 @@ Les tests permettent notamment de vérifier :
 - le fonctionnement de la prédiction ;
 - la cohérence dimensionnelle des résultats retournés par l'API ;
 - l'API renvoie bien une liste d'identifiants clients, non vide et composée d'entiers ;
-- la probabilité entre 0 et 1
+- la probabilité entre 0 et 1 ;
 - seuil entre 0 et 1 ;
 - il existe bien une valeur SHAP et une valeur de variable pour chaque feature.
   
@@ -188,8 +222,8 @@ Les tests permettent notamment de vérifier :
 - la récupération des informations nécessaires à l'interprétation SHAP
   
   Le préprocessing :
-- la fonction retourne bien un DataFrame
-- la présence d'une unique ligne par client
+- la fonction retourne bien un DataFrame ;
+- la présence d'une unique ligne par client ;
 - l'absence de la cible dans les features
 
 ---
