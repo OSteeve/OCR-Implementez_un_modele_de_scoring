@@ -14,7 +14,6 @@ def test_model_predict_proba():
 
     # Vérification : proba est valide entre 0 et 1
     assert 0 <= proba <= 1
-    # Vérification : prediction est valide entre 0 ou 1
     assert prediction in [0, 1]
 
 
